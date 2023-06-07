@@ -1,25 +1,57 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react"
+import Todo from "./components/Todo"
+import TodoForm from "./components/TodoFrom"
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const todos = [{
+        id: "01",
+        text: "Baca buku React Uncover"
+    },
+    {
+        id: "02",
+        text: "Makan siang"
+    },
+    {
+        id: "03",
+        text: "Main game"
+    }
+];
+
+const MyApp = () => {
+    const [arrayTodo, setArrayTodo] = useState(todos);
+
+    const handleDeleteClick = (e) => {
+        const newTodos = arrayTodo.filter(
+            item => item.id !== e.target.id
+        );
+        setArrayTodo(newTodos);
+    }
+
+    const handleAddTodo = (text) => {
+        const newTodos = [
+            ...arrayTodo,
+            {
+                id: new Date().getTime().toString(),
+                text: text
+            }
+        ];
+        setArrayTodo(newTodos);
+    }
+
+    return (
+        <div className="container">
+            {
+                arrayTodo.map((todo) => (
+                    <Todo 
+                        key={todo.id}
+                        id={todo.id}
+                        text={todo.text}
+                        onTodoClick={handleDeleteClick}
+                    />
+                ))
+            }
+            <TodoForm onAddTodo={handleAddTodo}/>
+        </div>
+    )
 }
 
-export default App;
+export default MyApp
